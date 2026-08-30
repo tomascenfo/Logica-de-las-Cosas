@@ -15,6 +15,7 @@
       --muted: #6c6a65;
       --rule: #ddd8ce;
       --link: #145a8d;
+      --tag-bg: #eef4f8;
     }
 
     * {
@@ -120,6 +121,20 @@
       font-size: 1rem;
     }
 
+    .tag {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--tag-bg);
+      color: var(--link);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
     .capitulo:hover h2,
     .capitulo:focus-visible h2 {
       color: var(--link);
@@ -189,7 +204,8 @@
 
         <div>
           <h2>Notas y Números</h2>
-          <p>La conexión pitagórica en la música.</p>
+          <p>La conexión pitagórica en la música y la matemática que hay detrás de las notas, los intervalos y la afinación.</p>
+          <span class="tag">Interactivo</span>
         </div>
       </a>
 
@@ -198,10 +214,18 @@
 
         <div>
           <h2>Dinámica de congestiones de tráfico</h2>
-          <p>
-            Presas fantasma, efecto mirón y la dinámica que emerge
-            del comportamiento de los conductores.
-          </p>
+          <p>Presas fantasma, efecto mirón y la dinámica colectiva que emerge del comportamiento de los conductores.</p>
+          <span class="tag">Simulación</span>
+        </div>
+      </a>
+
+      <a class="capitulo" href="./entropia/">
+        <div class="numero">03</div>
+
+        <div>
+          <h2>La matemática de las sorpresas</h2>
+          <p>Probabilidad, información y entropía para entender cómo podemos medir matemáticamente qué tan inesperado es un evento.</p>
+          <span class="tag">Interactivo</span>
         </div>
       </a>
     </section>
