@@ -15,3 +15,8 @@ Mi intención con **La Lógica de las Cosas** es mantener una colección abierta
 Pueden ver los HTML en el repositorio, o ver el libro digital en el siguiente link:
 
 https://tomascenfo.github.io/Logica-de-las-Cosas/
+
+**Tomás de Camino Beck**  
+Director Escuela de Sistemas Inteligentes  
+Universidad CENFOTEC
+
