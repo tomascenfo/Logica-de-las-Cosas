@@ -1,5 +1,7 @@
 # La Lógica de las Cosas
 
+Link al libro digital: https://tomascenfo.github.io/Logica-de-las-Cosas/
+
 Soy **Tomás de Camino Beck**, Director de la Escuela de Sistemas Inteligentes de la **Universidad CENFOTEC**, y este repositorio reúne una serie de exploraciones sobre matemática, computación, ciencia, tecnología y sistemas que he desarrollado a lo largo de varios años, buscando explicar fenómenos que aparecen en nuestra vida cotidiana a partir de las ideas, modelos y estructuras que los hacen funcionar.
 
 Muchas de estas exploraciones nacieron originalmente como artículos que publiqué en una columna de prensa, donde intentaba acercar conceptos científicos y matemáticos a un público amplio mediante ejemplos cotidianos, experimentos mentales y pequeñas simulaciones que permitieran comprender las ideas más allá de las fórmulas. Como complemento de esos textos desarrollé personalmente numerosas simulaciones y experimentos interactivos utilizando **p5.js**, convirtiendo conceptos que inicialmente estaban descritos mediante palabras en objetos que podían observarse, modificarse y experimentarse directamente.
