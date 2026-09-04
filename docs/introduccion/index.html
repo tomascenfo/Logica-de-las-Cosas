@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Introducción a La lógica de las cosas, por Tomás de Camino Beck. Una colección abierta de exploraciones sobre matemática, computación, ciencia, tecnología y sistemas.">
+<meta name="author" content="Tomás de Camino Beck">
+<title>Introducción — La lógica de las cosas</title>
+<style>
+:root{
+  --bg:#f3f1eb;
+  --paper:#fffefa;
+  --text:#202124;
+  --muted:#6c6a65;
+  --rule:#ddd8ce;
+  --link:#145a8d;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Georgia,"Times New Roman",serif;
+  line-height:1.72;
+}
+main{
+  width:min(900px,calc(100% - 32px));
+  margin:48px auto;
+  background:var(--paper);
+  padding:clamp(28px,6vw,72px);
+  border:1px solid var(--rule);
+  box-shadow:0 14px 40px rgba(0,0,0,.06);
+}
+.book-nav{
+  margin:-18px 0 34px;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:.82rem;
+}
+.book-nav a{
+  text-decoration:none;
+  color:var(--muted);
+}
+.book-nav a:hover,
+.book-nav a:focus-visible{
+  color:var(--link);
+  text-decoration:underline;
+}
+h1{
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:clamp(2.2rem,6vw,4.5rem);
+  line-height:1.02;
+  letter-spacing:-.045em;
+  margin:0 0 42px;
+}
+p{
+  font-size:1.08rem;
+  margin:0 0 1.45em;
+}
+strong{font-weight:700}
+a{
+  color:var(--link);
+  text-underline-offset:3px;
+}
+.closing-rule{
+  margin-top:46px;
+  padding-top:24px;
+  border-top:1px solid var(--rule);
+}
+.closing-rule p{
+  margin:0;
+  color:var(--muted);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:.82rem;
+}
+@media(max-width:650px){
+  body{background:var(--paper)}
+  main{
+    width:100%;
+    margin:0;
+    border:0;
+    box-shadow:none;
+    padding:28px 20px 48px;
+  }
+  .book-nav{margin-top:0}
+  p{font-size:1rem}
+}
+@media print{
+  body{background:white}
+  main{
+    width:100%;
+    margin:0;
+    border:0;
+    box-shadow:none;
+  }
+  .book-nav{display:none}
+}
+</style>
+</head>
+<body>
+<main>
+<nav class="book-nav" aria-label="Navegación del libro">
+  <a href="../index.html">← Volver al índice</a>
+</nav>
+
+<h1>Introducción</h1>
+
+<p>Soy <strong>Tomás de Camino Beck</strong>, Director de la Escuela de Sistemas Inteligentes de la <strong>Universidad CENFOTEC</strong>, y este repositorio reúne una serie de exploraciones sobre matemática, computación, ciencia, tecnología y sistemas que he desarrollado a lo largo de varios años, buscando explicar fenómenos que aparecen en nuestra vida cotidiana a partir de las ideas, modelos y estructuras que los hacen funcionar.</p>
+
+<p>Muchas de estas exploraciones nacieron originalmente como artículos que publiqué en una columna de prensa, donde intentaba acercar conceptos científicos y matemáticos a un público amplio mediante ejemplos cotidianos, experimentos mentales y pequeñas simulaciones que permitieran comprender las ideas más allá de las fórmulas. Como complemento de esos textos desarrollé personalmente numerosas simulaciones y experimentos interactivos utilizando <strong>p5.js</strong>, convirtiendo conceptos que inicialmente estaban descritos mediante palabras en objetos que podían observarse, modificarse y experimentarse directamente.</p>
+
+<p>Con el tiempo decidí trasladar y reorganizar ese trabajo en este repositorio, transformando los artículos y sus experimentos en páginas web independientes que pueden utilizarse directamente con propósitos educativos. La intención es que cada capítulo pueda recorrerse como una pequeña exploración donde texto, código, visualización e interacción forman parte de una misma explicación, permitiendo que quien lee pueda experimentar con las ideas en lugar de limitarse a observarlas de manera pasiva.</p>
+
+<p>Una característica importante de este proyecto es que el código de las interacciones, modelos y simulaciones está contenido directamente en los archivos HTML, por lo que puede examinarse desde el navegador o desde el propio repositorio sin necesidad de herramientas adicionales. Considero que esta transparencia forma parte del propósito educativo del proyecto, porque permite pasar naturalmente de preguntarse cómo funciona un fenómeno a preguntarse cómo puede representarse computacionalmente.</p>
+
+<p>También recomiendo utilizar estos archivos HTML como <strong>fuente de información y contexto para trabajar con herramientas de inteligencia artificial generativa</strong>, ya que contienen simultáneamente la explicación conceptual, la estructura de la interacción y el código que implementa cada modelo. Esto permite utilizarlos como punto de partida para pedirle a una IA que explique un algoritmo, modifique una simulación, proponga nuevos experimentos, transforme una visualización o desarrolle nuevas exploraciones a partir de las existentes.</p>
+
+<p>Mi intención con <strong>La Lógica de las Cosas</strong> es mantener una colección abierta y en evolución donde escribir, programar y experimentar sean partes de un mismo proceso de aprendizaje, aprovechando la web y las herramientas de inteligencia artificial para convertir ideas científicas y matemáticas en experiencias que puedan explorarse, modificarse y reconstruirse.</p>
+
+<div class="closing-rule">
+  <p>La lógica de las cosas · Tomás de Camino Beck</p>
+</div>
+</main>
+</body>
+</html>
