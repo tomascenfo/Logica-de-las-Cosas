@@ -6,153 +6,47 @@
   <meta name="description" content="La lógica de las cosas. Ideas, modelos y experimentos para entender cómo funciona el mundo, por Tomás de Camino Beck.">
   <title>La lógica de las cosas — Tomás de Camino Beck</title>
   <style>
-    :root {
-      --bg: #f3f1eb;
-      --paper: #fffefa;
-      --text: #202124;
-      --muted: #6c6a65;
-      --rule: #ddd8ce;
-      --link: #145a8d;
-      --tag-bg: #eef4f8;
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Georgia, "Times New Roman", serif;
-      line-height: 1.65;
-    }
-    main {
-      width: min(900px, calc(100% - 32px));
-      margin: 48px auto;
-      background: var(--paper);
-      padding: clamp(32px, 7vw, 76px);
-      border: 1px solid var(--rule);
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.06);
-    }
-    header { padding-bottom: 48px; border-bottom: 1px solid var(--rule); }
-    h1 {
-      margin: 0 0 14px;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: clamp(2.8rem, 8vw, 5.8rem);
-      line-height: 0.95;
-      letter-spacing: -0.055em;
-    }
-    .subtitulo {
-      max-width: 620px;
-      margin: 0;
-      color: #555;
-      font-size: clamp(1.05rem, 2.2vw, 1.25rem);
-      line-height: 1.55;
-    }
-    .autor {
-      margin-top: 24px;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 0.92rem;
-      color: var(--muted);
-    }
-    .indice { padding-top: 52px; }
-    .indice-label {
-      margin: 0 0 28px;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--muted);
-    }
-    .capitulo {
-      display: grid;
-      grid-template-columns: 54px 1fr;
-      gap: 20px;
-      padding: 28px 0;
-      border-top: 1px solid var(--rule);
-      text-decoration: none;
-      color: inherit;
-      transition: transform 0.15s ease;
-    }
-    .capitulo:last-of-type { border-bottom: 1px solid var(--rule); }
-    .numero {
-      padding-top: 4px;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: #99958c;
-    }
-    .capitulo h2 {
-      margin: 0 0 8px;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: clamp(1.4rem, 3vw, 2rem);
-      line-height: 1.15;
-      letter-spacing: -0.025em;
-      transition: color 0.15s ease;
-    }
-    .capitulo p { margin: 0; max-width: 680px; color: var(--muted); font-size: 1rem; }
-    .tag {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: var(--tag-bg);
-      color: var(--link);
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-    .capitulo:hover h2, .capitulo:focus-visible h2 { color: var(--link); }
-    .capitulo:hover { transform: translateX(3px); }
-    .capitulo:focus-visible { outline: 2px solid var(--link); outline-offset: 6px; }
-    footer {
-      padding-top: 42px;
-      color: var(--muted);
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 0.82rem;
-    }
-    @media (max-width: 650px) {
-      body { background: var(--paper); }
-      main { width: 100%; margin: 0; border: 0; box-shadow: none; padding: 34px 22px 50px; }
-      header { padding-bottom: 38px; }
-      .indice { padding-top: 38px; }
-      .capitulo { grid-template-columns: 38px 1fr; gap: 12px; padding: 24px 0; }
-      .capitulo:hover { transform: none; }
-    }
+    :root {--bg:#f3f1eb;--paper:#fffefa;--text:#202124;--muted:#6c6a65;--rule:#ddd8ce;--link:#145a8d;--tag-bg:#eef4f8}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Georgia,"Times New Roman",serif;line-height:1.65}
+    main{width:min(900px,calc(100% - 32px));margin:48px auto;background:var(--paper);padding:clamp(32px,7vw,76px);border:1px solid var(--rule);box-shadow:0 14px 40px rgba(0,0,0,.06)}
+    header{padding-bottom:48px;border-bottom:1px solid var(--rule)}h1{margin:0 0 14px;font-family:Arial,Helvetica,sans-serif;font-size:clamp(2.8rem,8vw,5.8rem);line-height:.95;letter-spacing:-.055em}
+    .subtitulo{max-width:620px;margin:0;color:#555;font-size:clamp(1.05rem,2.2vw,1.25rem);line-height:1.55}.autor{margin-top:24px;font-family:Arial,Helvetica,sans-serif;font-size:.92rem;color:var(--muted)}
+    .indice{padding-top:52px}.indice-label{margin:0 0 28px;font-family:Arial,Helvetica,sans-serif;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--muted)}
+    .capitulo{display:grid;grid-template-columns:54px 1fr;gap:20px;padding:28px 0;border-top:1px solid var(--rule);text-decoration:none;color:inherit;transition:transform .15s ease}.capitulo:last-of-type{border-bottom:1px solid var(--rule)}
+    .numero{padding-top:4px;font-family:Arial,Helvetica,sans-serif;font-size:.9rem;font-weight:700;color:#99958c}.capitulo h2{margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:clamp(1.4rem,3vw,2rem);line-height:1.15;letter-spacing:-.025em;transition:color .15s ease}
+    .capitulo p{margin:0;max-width:680px;color:var(--muted);font-size:1rem}.tag{display:inline-block;margin-top:12px;padding:4px 8px;border-radius:999px;background:var(--tag-bg);color:var(--link);font-family:Arial,Helvetica,sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+    .capitulo:hover h2,.capitulo:focus-visible h2{color:var(--link)}.capitulo:hover{transform:translateX(3px)}.capitulo:focus-visible{outline:2px solid var(--link);outline-offset:6px}
+    footer{padding-top:42px;color:var(--muted);font-family:Arial,Helvetica,sans-serif;font-size:.82rem}
+    @media(max-width:650px){body{background:var(--paper)}main{width:100%;margin:0;border:0;box-shadow:none;padding:34px 22px 50px}header{padding-bottom:38px}.indice{padding-top:38px}.capitulo{grid-template-columns:38px 1fr;gap:12px;padding:24px 0}.capitulo:hover{transform:none}}
   </style>
 </head>
 <body>
-  <main>
-    <header>
-      <h1>La lógica de las cosas</h1>
-      <p class="subtitulo">Ideas, modelos y experimentos para entender cómo funciona el mundo.</p>
-      <div class="autor">Tomás de Camino Beck</div>
-    </header>
-    <section class="indice">
-      <div class="indice-label">Índice</div>
-
-      <a class="capitulo" href="./musica-mate/"><div class="numero">01</div><div><h2>Notas y Números: La Conexión Pitagórica en la Música</h2><p>La conexión pitagórica en la música y la matemática que hay detrás de las notas, los intervalos y la afinación.</p><span class="tag">Interactivo</span></div></a>
-      <a class="capitulo" href="./congestiones/"><div class="numero">02</div><div><h2>Dinámica de congestiones de tráfico</h2><p>Presas fantasma, efecto mirón y la dinámica colectiva que emerge del comportamiento de los conductores.</p><span class="tag">Simulación</span></div></a>
-      <a class="capitulo" href="./entropia/"><div class="numero">03</div><div><h2>La matemática de las sorpresas (y algo de entropía)</h2><p>Probabilidad, información y entropía para entender cómo podemos medir matemáticamente qué tan inesperado es un evento.</p><span class="tag">Interactivo</span></div></a>
-      <a class="capitulo" href="./ley-benford/"><div class="numero">04</div><div><h2>El Primer Dígito No Es Casual</h2><p>Cómo detectar datos poco confiables observando la sorprendente distribución de los primeros dígitos y comparándola con lo que predice la ley de Benford.</p><span class="tag">Interactivo</span></div></a>
-      <a class="capitulo" href="./heuristicas/"><div class="numero">05</div><div><h2>Heurísticas - Decidir Rápido en un Mundo Complejo</h2><p>Cuando el sentido común vale. Atajos de razonamiento que permiten resolver problemas complejos rápidamente, aunque no siempre produzcan la solución perfecta.</p><span class="tag">Juegos y simulación</span></div></a>
-      <a class="capitulo" href="./cuerpos/"><div class="numero">06</div><div><h2>El problema de los cuerpos - Una simulación interactiva</h2><p>El problema de atracción de tres planetas y cómo interacciones gravitacionales muy simples pueden producir movimientos complejos, sensibles y difíciles de predecir.</p><span class="tag">Simulación</span></div></a>
-      <a class="capitulo" href="./percolacion/"><div class="numero">07</div><div><h2>Percolación — del azar a la estructura</h2><p>Redes, conectividad y umbrales críticos para entender cuándo un fluido puede atravesar un material poroso y cómo emerge una transición abrupta a partir de conexiones locales.</p><span class="tag">Simulación</span></div></a>
-      <a class="capitulo" href="./computar/"><div class="numero">08</div><div><h2>¿Qué significa computar?</h2><p>La esencia de las computadoras y cómo reglas extremadamente simples pueden generar comportamientos complejos capaces de realizar computación universal.</p><span class="tag">Simulación</span></div></a>
-      <a class="capitulo" href="./fractales/"><div class="numero">09</div><div><h2>La belleza de los fractales</h2><p>Patrones que se repiten a distintas escalas, geometrías que emergen de reglas simples y una exploración de la estructura matemática de los fractales.</p><span class="tag">Interactivo</span></div></a>
-      <a class="capitulo" href="./geneticos/"><div class="numero">10</div><div><h2>Algoritmos Genéticos: Una Historia de Evolución Digital</h2><p>Aprender de la naturaleza mediante selección, mutación y evolución para encontrar soluciones a partir de una población de candidatos.</p><span class="tag">Simulación</span></div></a>
-      <a class="capitulo" href="./game-of-life/"><div class="numero">11</div><div><h2>El Juego de la Vida: Modelos de Autómata Celular</h2><p>El autómata celular de Conway: reglas locales muy simples que generan patrones, estructuras y comportamientos complejos.</p><span class="tag">Simulación</span></div></a>
-      <a class="capitulo" href="./encriptacion/"><div class="numero">12</div><div><h2>¿Qué es la encripción y cómo funciona?</h2><p>Rotores, sustituciones y claves para explorar cómo funcionaba la máquina Enigma y por qué su cifrado fue tan difícil de romper.</p><span class="tag">Interactivo</span></div></a>
-      <a class="capitulo" href="./GPS/"><div class="numero">13</div><div><h2>Funcionamiento básico del GPS</h2><p>Cómo estimar una posición a partir de distancias a satélites, trilateración y mediciones con ruido.</p><span class="tag">Simulación</span></div></a>
-      <a class="capitulo" href="./programacion-genetica/"><div class="numero">14</div><div><h2>Programación Genética: no no es manipulación de genes, es programar como los seres vivos</h2><p>Cuando los programas evolucionan: árboles de expresiones, selección, cruces y mutaciones para aproximar funciones y resolver problemas.</p><span class="tag">Simulación</span></div></a>
-      <a class="capitulo" href="./markov/"><div class="numero">15</div><div><h2>Cadenas de Markov: Ejemplo con un generador de texto básico</h2><p>Cadenas de Markov para modelar secuencias y generar comportamientos probabilísticos a partir de transiciones entre estados.</p><span class="tag">Interactivo</span></div></a>
-      <a class="capitulo" href="./modulo/"><div class="numero">16</div><div><h2>2+2 no siempre es igual a 4 (y no es discurso motivacional)</h2><p>Aritmética modular, relojes, residuos e inversos multiplicativos: una matemática cíclica fundamental para la computación y la criptografía.</p><span class="tag">Interactivo</span></div></a>
-      <a class="capitulo" href="./infinito/"><div class="numero">17</div><div><h2>Infinito y más allá: una breve explicación del infinito</h2><p>Algoritmos, máquinas universales y los límites de lo que puede computarse cuando un proceso puede continuar indefinidamente.</p><span class="tag">Interactivo</span></div></a>
-      <a class="capitulo" href="./ZKP/"><div class="numero">18</div><div><h2>Cómo Compartir Secretos Sin Revelarlos: Las Pruebas de Conocimiento Cero</h2><p>Cómo demostrar que conoces un secreto sin revelarlo: una introducción visual a las pruebas de conocimiento cero.</p><span class="tag">Interactivo</span></div></a>
-      <a class="capitulo" href="./homomorfica/"><div class="numero">19</div><div><h2>¿Cómo anonimizar datos? Encriptación homomórfica</h2><p>Cómo realizar operaciones sobre datos cifrados y obtener resultados útiles sin necesidad de descifrarlos primero.</p><span class="tag">Interactivo</span></div></a>
-    </section>
-    <footer>Libro digital en desarrollo. Nuevos capítulos se irán incorporando a esta colección.</footer>
-  </main>
+<main>
+<header><h1>La lógica de las cosas</h1><p class="subtitulo">Ideas, modelos y experimentos para entender cómo funciona el mundo.</p><div class="autor">Tomás de Camino Beck</div></header>
+<section class="indice">
+<div class="indice-label">Índice</div>
+<a class="capitulo" href="./introduccion/"><div class="numero">01</div><div><h2>Introducción</h2><p>Una presentación de La lógica de las cosas, su origen, propósito educativo y la relación entre texto, código, simulación e inteligencia artificial generativa.</p><span class="tag">Introducción</span></div></a>
+<a class="capitulo" href="./musica-mate/"><div class="numero">02</div><div><h2>Notas y Números: La Conexión Pitagórica en la Música</h2><p>La conexión pitagórica en la música y la matemática que hay detrás de las notas, los intervalos y la afinación.</p><span class="tag">Interactivo</span></div></a>
+<a class="capitulo" href="./congestiones/"><div class="numero">03</div><div><h2>Dinámica de congestiones de tráfico</h2><p>Presas fantasma, efecto mirón y la dinámica colectiva que emerge del comportamiento de los conductores.</p><span class="tag">Simulación</span></div></a>
+<a class="capitulo" href="./entropia/"><div class="numero">04</div><div><h2>La matemática de las sorpresas (y algo de entropía)</h2><p>Probabilidad, información y entropía para entender cómo podemos medir matemáticamente qué tan inesperado es un evento.</p><span class="tag">Interactivo</span></div></a>
+<a class="capitulo" href="./ley-benford/"><div class="numero">05</div><div><h2>El Primer Dígito No Es Casual</h2><p>Cómo detectar datos poco confiables observando la distribución de los primeros dígitos y comparándola con lo que predice la ley de Benford.</p><span class="tag">Interactivo</span></div></a>
+<a class="capitulo" href="./heuristicas/"><div class="numero">06</div><div><h2>Heurísticas - Decidir Rápido en un Mundo Complejo</h2><p>Cuando el sentido común vale. Atajos de razonamiento que permiten resolver problemas complejos rápidamente, aunque no siempre produzcan la solución perfecta.</p><span class="tag">Juegos y simulación</span></div></a>
+<a class="capitulo" href="./cuerpos/"><div class="numero">07</div><div><h2>El problema de los cuerpos - Una simulación interactiva</h2><p>El problema de atracción de tres planetas y cómo interacciones gravitacionales muy simples pueden producir movimientos complejos, sensibles y difíciles de predecir.</p><span class="tag">Simulación</span></div></a>
+<a class="capitulo" href="./percolacion/"><div class="numero">08</div><div><h2>Percolación — del azar a la estructura</h2><p>Redes, conectividad y umbrales críticos para entender cuándo un fluido puede atravesar un material poroso y cómo emerge una transición abrupta a partir de conexiones locales.</p><span class="tag">Simulación</span></div></a>
+<a class="capitulo" href="./computar/"><div class="numero">09</div><div><h2>¿Qué significa computar?</h2><p>La esencia de las computadoras y cómo reglas extremadamente simples pueden generar comportamientos complejos capaces de realizar computación universal.</p><span class="tag">Simulación</span></div></a>
+<a class="capitulo" href="./fractales/"><div class="numero">10</div><div><h2>La belleza de los fractales</h2><p>Patrones que se repiten a distintas escalas, geometrías que emergen de reglas simples y una exploración de la estructura matemática de los fractales.</p><span class="tag">Interactivo</span></div></a>
+<a class="capitulo" href="./geneticos/"><div class="numero">11</div><div><h2>Algoritmos Genéticos: Una Historia de Evolución Digital</h2><p>Aprender de la naturaleza mediante selección, mutación y evolución para encontrar soluciones a partir de una población de candidatos.</p><span class="tag">Simulación</span></div></a>
+<a class="capitulo" href="./game-of-life/"><div class="numero">12</div><div><h2>El Juego de la Vida: Modelos de Autómata Celular</h2><p>El autómata celular de Conway: reglas locales muy simples que generan patrones, estructuras y comportamientos complejos.</p><span class="tag">Simulación</span></div></a>
+<a class="capitulo" href="./encriptacion/"><div class="numero">13</div><div><h2>¿Qué es la encripción y cómo funciona?</h2><p>Una explicación del cifrado, la exponenciación modular y el intercambio de claves mediante ejemplos interactivos.</p><span class="tag">Interactivo</span></div></a>
+<a class="capitulo" href="./GPS/"><div class="numero">14</div><div><h2>Funcionamiento básico del GPS</h2><p>Cómo estimar una posición a partir de distancias a satélites, trilateración y mediciones con ruido.</p><span class="tag">Simulación</span></div></a>
+<a class="capitulo" href="./programacion-genetica/"><div class="numero">15</div><div><h2>Programación Genética: no no es manipulación de genes, es programar como los seres vivos</h2><p>Cuando los programas evolucionan: árboles de expresiones, selección, cruces y mutaciones para aproximar funciones y resolver problemas.</p><span class="tag">Simulación</span></div></a>
+<a class="capitulo" href="./markov/"><div class="numero">16</div><div><h2>Cadenas de Markov: Ejemplo con un generador de texto básico</h2><p>Cadenas de Markov para modelar secuencias y generar comportamientos probabilísticos a partir de transiciones entre estados.</p><span class="tag">Interactivo</span></div></a>
+<a class="capitulo" href="./modulo/"><div class="numero">17</div><div><h2>2+2 no siempre es igual a 4 (y no es discurso motivacional)</h2><p>Aritmética modular, relojes, residuos e inversos multiplicativos: una matemática cíclica fundamental para la computación y la criptografía.</p><span class="tag">Interactivo</span></div></a>
+<a class="capitulo" href="./infinito/"><div class="numero">18</div><div><h2>Infinito y más allá: una breve explicación del infinito</h2><p>Algoritmos, máquinas universales y los límites de lo que puede computarse cuando un proceso puede continuar indefinidamente.</p><span class="tag">Interactivo</span></div></a>
+<a class="capitulo" href="./ZKP/"><div class="numero">19</div><div><h2>Cómo Compartir Secretos Sin Revelarlos: Las Pruebas de Conocimiento Cero</h2><p>Cómo demostrar que conoces un secreto sin revelarlo: una introducción visual a las pruebas de conocimiento cero.</p><span class="tag">Interactivo</span></div></a>
+<a class="capitulo" href="./homomorfica/"><div class="numero">20</div><div><h2>¿Cómo anonimizar datos? Encriptación homomórfica</h2><p>Cómo realizar operaciones sobre datos cifrados y obtener resultados útiles sin necesidad de descifrarlos primero.</p><span class="tag">Interactivo</span></div></a>
+</section>
+<footer>Libro digital en desarrollo. Nuevos capítulos se irán incorporando a esta colección.</footer>
+</main>
 </body>
 </html>
