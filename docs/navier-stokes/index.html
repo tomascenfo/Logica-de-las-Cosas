@@ -1,1 +1,313 @@
-% por construir
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Tomás de Camino Beck"><meta name="description" content="Una explicación sencilla de Navier-Stokes, con seis juegos progresivos en dos dimensiones.">
+<title>Una explicación sencilla de Navier-Stokes</title><style>
+:root{
+  --bg:#f3f1eb; --paper:#fffefa; --text:#202124; --muted:#6c6a65;
+  --rule:#ddd8ce; --link:#145a8d; --panel:#f6f8fa; --dark:#101827;
+  --accent:#245f8f; --soft:#eef2f5; --gray:#aeb4ba;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Georgia,"Times New Roman",serif;line-height:1.72}
+main{width:min(900px,calc(100% - 32px));margin:48px auto;background:var(--paper);padding:clamp(28px,6vw,72px);border:1px solid var(--rule);box-shadow:0 14px 40px rgba(0,0,0,.06)}
+h1{font-family:Arial,Helvetica,sans-serif;font-size:clamp(2.2rem,6vw,4.5rem);line-height:1.02;letter-spacing:-.045em;margin:0 0 42px}
+p{font-size:1.08rem;margin:0 0 1.45em}
+strong{font-weight:700}
+a{color:var(--link);text-underline-offset:3px;overflow-wrap:anywhere}
+figure{margin:30px auto 38px;text-align:center}
+figure img{display:block;max-width:100%;height:auto;margin:auto}
+.original-figure{width:min(100%,760px);background:#fff}
+.section-heading{font-family:Arial,Helvetica,sans-serif;font-weight:800;font-size:1.08rem;margin:34px 0 1.1em}
+.author{margin-top:46px;padding-top:24px;border-top:1px solid var(--rule)}
+.author p{margin:0;font-size:1rem}
+.book-nav{margin:-18px 0 34px;font-family:Arial,Helvetica,sans-serif;font-size:.82rem}
+.book-nav a{text-decoration:none;color:var(--muted)}
+.book-nav a:hover,.book-nav a:focus-visible{color:var(--link);text-decoration:underline}
+
+.experiment{
+  margin:30px 0 42px;padding:20px;border:1px solid #d5dce4;border-radius:16px;
+  background:linear-gradient(180deg,#fbfcfe,#f4f7fa);
+  font-family:Arial,Helvetica,sans-serif;box-shadow:0 8px 24px rgba(15,30,50,.06)
+}
+.exp-title{font-weight:800;font-size:1.08rem;margin-bottom:5px}
+.exp-help{font-size:.9rem;color:#66717d;margin:0 0 15px;line-height:1.45}
+.control-row{display:grid;grid-template-columns:minmax(160px,1fr) auto auto auto;gap:8px;align-items:end;margin-bottom:14px}
+.control-group{display:flex;flex-direction:column;gap:5px}
+.control-group label{font-size:.72rem;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:#77818c}
+.text-input,.number-input{min-height:38px;border:1px solid #c9cfd6;border-radius:9px;background:#fff;color:#202124;padding:8px 10px;font:700 .88rem Arial,Helvetica,sans-serif}
+.number-input{width:92px}
+.action-btn{min-height:38px;border:0;border-radius:9px;background:var(--dark);color:#fff;padding:8px 13px;font:800 .8rem Arial,Helvetica,sans-serif;cursor:pointer}
+.action-btn.secondary{background:#e5e9ee;color:#26313c}
+.action-btn:hover{filter:brightness(.97)} .action-btn:active{transform:translateY(1px)}
+.output-card{background:#fff;border:1px solid #dfe3e8;border-radius:12px;padding:14px 15px;min-height:68px}
+.output-label{font-size:.68rem;letter-spacing:.04em;text-transform:uppercase;color:#77818c;font-weight:800;margin-bottom:5px}
+.generated-text{font:700 1rem/1.55 Georgia,"Times New Roman",serif;min-height:1.55em}
+.generator-status{margin:9px 2px 0;font-size:.78rem;color:#59636e;line-height:1.45}
+.generator-status.warn{color:#8a5b10}
+.path-wrap{margin-top:13px;padding-top:12px;border-top:1px solid #e3e6ea}
+.path-label{font-size:.68rem;letter-spacing:.04em;text-transform:uppercase;color:#77818c;font-weight:800;margin-bottom:8px}
+.transition-path{display:flex;align-items:flex-start;gap:7px;overflow-x:auto;padding:3px 1px 8px}
+.markov-step{display:flex;flex-direction:column;align-items:center;flex:0 0 auto;min-width:68px}
+.chosen-word,.alternative-word{border:1.5px solid #30343a;border-radius:999px;padding:6px 10px;background:#fff;font-size:.78rem;white-space:nowrap}
+.alternative-word{margin-top:7px;border-color:#c9cdd1;color:#a1a7ad;font-size:.7rem}
+.path-arrow{padding-top:7px;color:#626970;font-size:1rem;flex:0 0 auto}
+.demo-note{font-size:.78rem;color:#66717d;margin:10px 2px 0;line-height:1.45}
+.code-details{margin:16px 0 42px;border:1px solid #d5dce4;border-radius:12px;background:#f6f8fa;overflow:hidden;font-family:Arial,Helvetica,sans-serif}
+.code-details summary{cursor:pointer;padding:12px 15px;font-weight:800;font-size:.88rem;color:#26313c}
+.code-details pre{margin:0;padding:16px;max-height:580px;overflow:auto;background:#101827;color:#e8edf2;font:12.5px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;tab-size:2}
+.code-details code{font:inherit}
+.reference{padding-left:1.2em;text-indent:-1.2em}
+
+@media(max-width:650px){
+  body{background:var(--paper)}
+  main{width:100%;margin:0;border:0;box-shadow:none;padding:28px 20px 48px}
+  p{font-size:1rem}
+  .book-nav{margin-top:0}
+  .experiment{padding:14px;margin-left:-4px;margin-right:-4px}
+  .control-row{grid-template-columns:1fr 94px}
+  .action-btn{width:100%}
+}
+@media(max-width:430px){
+  .control-row{grid-template-columns:1fr}
+  .number-input{width:100%}
+}
+@media print{
+  body{background:white}main{width:100%;margin:0;border:0;box-shadow:none}
+  .experiment{break-inside:avoid;box-shadow:none}.book-nav,.action-btn{display:none}.code-details{break-inside:avoid}
+}
+
+
+h2{font-family:Arial,Helvetica,sans-serif;line-height:1.3}
+.experiment h2{font-size:1.08rem;margin:0 0 8px}
+.experiment p{font-size:.9rem;line-height:1.5}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+button{min-height:44px;border:0;border-radius:9px;padding:10px 14px;background:var(--dark);color:white;font:bold .85rem Arial;cursor:pointer}
+button.secondary{background:#e5e9ee;color:#26313c}
+button:focus-visible,canvas:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #245f8f;outline-offset:3px}
+canvas{display:block;width:100%;height:auto;aspect-ratio:9/5;border:1px solid #d5dce4;border-radius:10px;touch-action:pan-y}
+canvas[data-agitate]{touch-action:none}
+.slider{display:grid;grid-template-columns:1fr auto;gap:5px;font-size:.85rem;margin:12px 0}
+.slider input{grid-column:1/-1;width:100%;accent-color:#245f8f;min-height:30px}
+.metric,.status{font-size:.83rem!important;margin:10px 0 0!important;font-variant-numeric:tabular-nums}
+.status{border-left:3px solid #9bb3c5;padding-left:10px;color:#344c61;min-height:2.7em}
+.complete .status{border-color:#39766d}.demo-note{font-size:.8rem!important}
+.journey{font: .85rem/1.55 Arial,sans-serif;color:var(--muted);margin:0 0 30px;padding:16px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.journey a{display:inline-block;margin-right:10px}.journey p{font:inherit;margin:8px 0 0}
+pre{white-space:pre;overflow:auto;max-width:100%}main{overflow-wrap:break-word}
+@media(max-width:430px){main{padding:28px 18px}.experiment{padding:12px}.controls button{flex:1 1 auto}.book-nav{margin-top:0}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{.controls,.slider{display:none}.experiment{break-inside:avoid}details{display:none}}
+</style></head><body><main id="inicio">
+<nav class="book-nav" aria-label="Navegación del libro"><a href="index.html">← Volver al índice</a></nav>
+<h1>Una explicación sencilla de Navier-Stokes</h1>
+<nav class="journey" aria-label="Juegos del capítulo">Seis exploraciones en dos dimensiones<br><a href="#juego-1">1. Vecinos</a><a href="#juego-2">2. Transporte</a><a href="#juego-3">3. Presión</a><a href="#juego-4">4. Viscosidad</a><a href="#juego-5">5. Fuerzas</a><a href="#juego-6">6. Fluido</a><p id="progress">0 de 6 retos logrados</p></nav>
+<p data-original="2">Imaginemos una caja llena de arena, de esas en las que jugabamos cuando eramos niños. Al meter la mano,  cada grano se mueve, y empuja a los granos que están más cercanos, al moverse se frenan porque rozan otros granos y transmiten parte de su movimiento a los que tiene alrededor. Lo interesante es que si movemos una zona de la arena, el efecto no ocurre en toda la caja de inmediato, sino que se transmite localmente, de grano en grano. </p>
+<p data-original="4">Ahora imaginemos que esos granos son cada vez más pequeños y más numerosos, tan pequeños que ya no podemos distinguirlos individualmente. Sería lo mismo entonces que meter la mano en un balde de agua., y en el agua nosotros lo que percibimos es la idea de un fluido continuo, de hecho, difícilmente podemos “agarrar” el agua con la mano, a diferencia de la arena. En el agua, La viscosidad puede entenderse entonces como la tendencia que tienen regiones vecinas del fluido a influirse entre sí, así como granos de arena muy pequeños, de allí, por ejemplo, una parte que se mueve rápido arrastra a partes cercanas, mientras que estas también la frenan. Lo que antes imaginábamos como interacciones entre granos ahora se convierte en una interacción continua entre pequeñas regiones de lo que llamamos un fluido.</p>
+<section class="experiment" id="juego-1" data-game="1" data-initial="Haz llegar al menos un 1,8 % de movimiento a la zona lejana." aria-labelledby="titulo-1">
+<h2 id="titulo-1">1. Un impulso pasa a los vecinos</h2><p>Da un impulso a la zona izquierda. Observa cómo las flechas transmiten el movimiento hasta la franja marcada. Puedes cambiar la intensidad del intercambio.</p><label class="slider" for="g1-spread"><span>Intercambio entre vecinos</span><output id="g1-spread-value">6</output><input id="g1-spread" data-param="spread" type="range" min="1" max="10" value="6"></label>
+<div class="controls"><button data-action="play">Iniciar</button><button class="secondary" data-action="reset">Reiniciar</button><button data-push="right">Dar impulso</button></div>
+<canvas width="720" height="400" tabindex="0" aria-label="Un impulso pasa a los vecinos. Usa los controles del juego." >Simulación bidimensional. Los controles y el indicador textual permiten seguir el reto.</canvas>
+<p class="metric">Listo para explorar</p><p class="status" role="status">Haz llegar al menos un 1,8 % de movimiento a la zona lejana.</p><p class="demo-note">Analogía discreta del intercambio de movimiento. Las flechas representan velocidades en regiones fijas. Este modelo de difusión no simula choques de granos de arena.</p></section>
+<p data-original="6">A partir de esta idea podemos preguntarnos qué ocurre con una pequeña región del fluido mientras se mueve. Esa región puede cambiar de velocidad porque la empujan las regiones vecinas, porque existen diferencias de presión o porque el propio movimiento del fluido la lleva hacia lugares donde las condiciones son distintas. Pensarlo no parece difícil, sin embargo, la dificultad aparece porque cada parte del fluido influye en las demás al mismo tiempo, y eso es extremadamente difícil de medir y calcular. Un cambio pequeño local, puede propagarse y formar remolinos, como los que vemos en ríos o en el mar, concentrarse en una zona o disiparse por efecto de la viscosidad. Describir un fluido consiste entonces en seguir cómo cambia el movimiento en cada punto y cómo esos cambios locales terminan produciendo el comportamiento del todo el conjunto… Esto es extremadamente difícil de hacer.</p>
+<p data-original="8">Entender esto es valioso porque gran parte del mundo que nos rodea se comporta como un fluido. El aire alrededor de un avión, el agua en una tubería, la sangre en una arteria, el humo, las corrientes oceánicas y buena parte del clima dependen de cómo se mueve un fluido y de cómo pequeñas interacciones locales terminan produciendo efectos a gran escala. Es decir, poder modelar y entender esto tiene implicaciones importantes en la sociedad humana.</p>
+<p data-original="10">La ecuación de Navier–Stokes nace justamente de intentar describir ese balance local. En cada punto del fluido queremos saber cómo cambia la velocidad y qué está causando ese cambio. Para hacerlo se combinan varios efectos, el movimiento que el propio fluido transporta, las diferencias de presión, la viscosidad y las fuerzas externas que puedan estar actuando. La idea central en realidad es sencilla, seguir qué le ocurre al movimiento en una región muy pequeña y usar esas reglas locales para describir el comportamiento de todo el fluido. Es decir, entender un comportamiento de todo el fluido, a través de partículas locales.</p>
+<p data-original="12">Podemos construir la idea de Navier–Stokes preguntando, una por una, qué cosas pueden cambiar el movimiento de una pequeña región del fluido. Primero está el movimiento que ya trae el propio fluido. Luego están los empujes producidos por diferencias de presión. También está la viscosidad, que tiende a suavizar diferencias de velocidad entre regiones cercanas. Finalmente pueden actuar fuerzas externas, como la gravedad. La ecuación reúne todos esos efectos y expresa cómo, al combinarse, determinan la manera en que cambia el movimiento del fluido en cada punto.</p>
+<p data-original="14">El primer componente es el propio movimiento del fluido. Si una región ya se está desplazando, ese movimiento lleva una velocidad de un lugar a otro. Una corriente rápida por ejemplo, puede llevar su movimiento hacia una zona más lenta y modificarla. Esto hace que el fluido no solo responda a fuerzas externas, sino también a la forma misma en la que se está moviendo. En otras palabras, el movimiento del propio fluido ayuda a determinar cómo seguirá moviéndose el mismo. Un ejemplo sencillo es una corriente de agua que entra con fuerza en una zona donde el agua está casi quieta, por ejemplo agregar agua con una manguera a un balde. Al entrar el agua de la manguera, arrastra parte del agua cercana, desvía otras regiones y puede formar remolinos. El movimiento que se inicia en el balde termina modificando el movimiento de agua de todo el balde. Esa capacidad del fluido de transportar su propio movimiento es una de las partes esenciales de esta famosa ecuación.</p>
+<section class="experiment" id="juego-2" data-game="2" data-initial="Transporta el trazador hasta la meta." aria-labelledby="titulo-2">
+<h2 id="titulo-2">2. Viajar con la corriente</h2><p>Ajusta la rapidez e inicia el recorrido. Lleva el punto azul hasta el círculo siguiendo el campo de flechas.</p><label class="slider" for="g2-speed"><span>Rapidez de la corriente</span><output id="g2-speed-value">60</output><input id="g2-speed" data-param="speed" type="range" min="0" max="120" value="60"></label>
+<div class="controls"><button data-action="play">Iniciar</button><button class="secondary" data-action="reset">Reiniciar</button></div>
+<canvas width="720" height="400" tabindex="0" aria-label="Viajar con la corriente. Usa los controles del juego." >Simulación bidimensional. Los controles y el indicador textual permiten seguir el reto.</canvas>
+<p class="metric">Listo para explorar</p><p class="status" role="status">Transporta el trazador hasta la meta.</p><p class="demo-note">Un trazador sigue un campo de velocidad prescrito y estacionario. Esta etapa muestra transporte; en el juego final, el campo también transporta su propia velocidad.</p></section>
+<p data-original="16">El siguiente componente es la presión. En un balde con agua, una región puede recibir más empuje que otra. Esa diferencia hace que el agua tienda a desplazarse desde las zonas donde la presión es mayor hacia las zonas donde es menor. Si movemos el balde o agitamos el agua, esas diferencias cambian continuamente y contribuyen a acelerar, frenar o desviar pequeñas regiones del fluido, de hecho usamos esa idea para revolver líquidos (jabón en un balde). La presión funciona entonces como una forma de transmitir empujes a través del agua.</p>
+<section class="experiment" id="juego-3" data-game="3" data-initial="Detén la región azul dentro del círculo." aria-labelledby="titulo-3">
+<h2 id="titulo-3">3. Empujar con la presión</h2><p>Un valor positivo significa mayor presión a la izquierda. Acelera hacia la meta y luego invierte la diferencia para frenar. El valor cero conserva la velocidad.</p><label class="slider" for="g3-pressure"><span>Presión izquierda menos derecha</span><output id="g3-pressure-value">0</output><input id="g3-pressure" data-param="pressure" type="range" min="-100" max="100" value="0"></label>
+<div class="controls"><button data-action="play">Iniciar</button><button class="secondary" data-action="reset">Reiniciar</button></div>
+<canvas width="720" height="400" tabindex="0" aria-label="Empujar con la presión. Usa los controles del juego." >Simulación bidimensional. Los controles y el indicador textual permiten seguir el reto.</canvas>
+<p class="metric">Listo para explorar</p><p class="status" role="status">Detén la región azul dentro del círculo.</p><p class="demo-note">Se aísla la aceleración por un gradiente uniforme de presión. La región azul tiene densidad constante. En el fluido completo, la presión se ajusta junto al movimiento para conservar aproximadamente el volumen.</p></section>
+<p data-original="18">El siguiente componente es la viscosidad. En el agua del balde, las zonas que se mueven rápido arrastran a las que están cerca, y las zonas más lentas frenan a las rápidas, en un efecto combinado en todo el balde. Ese intercambio hace que las diferencias de velocidad se vayan suavizando. Es decir,  si dejamos de mover el balde, los remolinos y corrientes internas pierden fuerza poco a poco hasta que el agua vuelve a quedar en reposo. La viscosidad es parte de lo que produce ese efecto.</p>
+<section class="experiment" id="juego-4" data-game="4" data-initial="Reduce el movimiento restante por debajo del 20 %." aria-labelledby="titulo-4">
+<h2 id="titulo-4">4. Suavizar las diferencias</h2><p>Las flechas muestran capas que se mueven a distintas velocidades. Ajusta la viscosidad e inicia la evolución. Compara con viscosidad cero reiniciando el juego.</p><label class="slider" for="g4-nu"><span>Viscosidad</span><output id="g4-nu-value">60</output><input id="g4-nu" data-param="nu" type="range" min="0" max="100" value="60"></label>
+<div class="controls"><button data-action="play">Iniciar</button><button class="secondary" data-action="reset">Reiniciar</button></div>
+<canvas width="720" height="400" tabindex="0" aria-label="Suavizar las diferencias. Usa los controles del juego." >Simulación bidimensional. Los controles y el indicador textual permiten seguir el reto.</canvas>
+<p class="metric">Listo para explorar</p><p class="status" role="status">Reduce el movimiento restante por debajo del 20 %.</p><p class="demo-note">Difusión de velocidades de un flujo de cizalla entre paredes quietas. El indicador compara la suma de velocidades al cuadrado con su valor inicial. Es un caso plano con variación entre capas.</p></section>
+<p data-original="19">También pueden actuar fuerzas externas. En el caso del agua en un balde, la gravedad está presente todo el tiempo y contribuye a determinar cómo se distribuye el agua y cómo responde cuando inclinamos o movemos el recipiente. Si aceleramos el balde, lo detenemos de golpe o lo hacemos girar, estamos introduciendo fuerzas que cambian el movimiento del agua. Estas fuerzas externas se suman a lo que ya ocurre dentro del fluido por su propio movimiento, la presión y la viscosidad. Cómo ven las cosas, aunque son principios simples, combinadas se vuelven cada vez más complejas.</p>
+<section class="experiment" id="juego-5" data-game="5" data-initial="Llega a la meta con rapidez menor de 25 unidades/s." aria-labelledby="titulo-5">
+<h2 id="titulo-5">5. Aplicar fuerzas y frenar</h2><p>Cada botón aplica un impulso en la dirección indicada. Llega al círculo superior derecho y frena con impulsos opuestos. También puedes usar las flechas del teclado sobre el dibujo.</p>
+<div class="controls"><button data-action="play">Iniciar</button><button class="secondary" data-action="reset">Reiniciar</button><button class="secondary" data-push="left">← Izquierda</button><button class="secondary" data-push="right">Derecha →</button><button class="secondary" data-push="up">↑ Arriba</button><button class="secondary" data-push="down">↓ Abajo</button></div>
+<canvas width="720" height="400" tabindex="0" aria-label="Aplicar fuerzas y frenar. Usa los controles del juego." >Simulación bidimensional. Los controles y el indicador textual permiten seguir el reto.</canvas>
+<p class="metric">Listo para explorar</p><p class="status" role="status">Llega a la meta con rapidez menor de 25 unidades/s.</p><p class="demo-note">Se aísla el efecto de fuerzas externas sobre una región con inercia. Los rebotes son una regla del juego; este movimiento de un marcador no representa por sí solo un balde lleno de agua.</p></section>
+<p data-original="20">Con estos componentes ya podemos entender qué intenta hacer Navier–Stokes. La ecuación toma una pequeña región del agua y pregunta cómo cambiará su movimiento considerando, al mismo tiempo, el movimiento que ya trae, los empujes debidos a la presión, el efecto suavizante de la viscosidad y las fuerzas externas. Después extiende esa misma explicación a cada punto del fluido. El resultado es una regla local que, aplicada en todas partes, permite describir cómo evoluciona el movimiento completo del agua. Acá no voy a mostrar fórmulas, pues para entender de manera general el fenómeno no las ocupamos.</p>
+<section class="experiment" id="juego-6" data-game="6" data-initial="Lleva al menos el 40 % de los trazadores a la meta." aria-labelledby="titulo-6">
+<h2 id="titulo-6">6. Combinar los ingredientes</h2><p>Arrastra sobre el agua para agitarla, o usa los botones para empujar cerca del grupo azul. Transporta 64 de los 160 trazadores al círculo. Los que llegan se vuelven verdes.</p><label class="slider" for="g6-nu"><span>Viscosidad</span><output id="g6-nu-value">30</output><input id="g6-nu" data-param="nu" type="range" min="0" max="100" value="30"></label>
+<div class="controls"><button data-action="play">Iniciar</button><button class="secondary" data-action="reset">Reiniciar</button><button class="secondary" data-push="left">← Izquierda</button><button class="secondary" data-push="right">Derecha →</button><button class="secondary" data-push="up">↑ Arriba</button><button class="secondary" data-push="down">↓ Abajo</button></div>
+<canvas width="720" height="400" tabindex="0" aria-label="Combinar los ingredientes. Usa los controles del juego." data-agitate>Simulación bidimensional. Los controles y el indicador textual permiten seguir el reto.</canvas>
+<p class="metric">Listo para explorar</p><p class="status" role="status">Lleva al menos el 40 % de los trazadores a la meta.</p><p class="demo-note">Aproximación numérica de un fluido incompresible 2D en una malla de 48 × 28, con paredes quietas. Se combinan fuerzas locales, difusión, transporte de velocidad y corrección de presión. Los puntos son trazadores sin masa; se marcan y detienen al alcanzar la meta como regla del juego. La malla y la interpolación introducen disipación numérica, incluso al seleccionar viscosidad cero.</p></section>
+<p data-original="22">Ahora sí, ¿por qué es un problema considerado problema del milenio? El problema aparece porque, aunque sabemos escribir esa explicación y usarla para calcular muchos movimientos reales, queda una pregunta fundamental que es difícil de responder. Si comenzamos con un fluido que se mueve de manera suave y bien definida, ¿seguirá comportándose así para siempre? Si pensamos en el agua en el balde como si fuera solo de dos dimensiones, un balde con volumen 0, esto sí se puede entender matemáticamente. En dos dimensiones se puede demostrar que el movimiento sigue siendo controlable, es decir, que el movimiento permanece suave y bien definido con el paso del tiempo, y que no aparece ningún punto donde la velocidad, o la forma en que esta cambia de un lugar a otro, crezca sin límite. </p>
+<p data-original="23">Pensar que algo puede crecer sin límite resulta extraño porque en el mundo real siempre esperamos encontrar algún límite físico,  pero al describir esta situación con una ecuación matemática puede suceder algo distinto. Imaginemos que una pequeña diferencia de velocidad produce un remolino, ese remolino concentra aún más el movimiento y esa concentración produce cambios todavía mayores. Si ese proceso se refuerza a sí mismo cada vez más rápido, la ecuación podría llevarnos a una situación donde una cantidad crece sin encontrar un valor máximo. No significa necesariamente que en el agua real aparezca literalmente un infinito. Significa que el modelo matemático puede llegar a un punto donde deja de producir valores finitos y suaves, y ahí aparece lo que llamamos una singularidad.</p>
+<p data-original="24">Ustedes dirán, pero si esto ocurre en una ecuación matemática y no en la realidad ¿por qué es tan importante este problema? Es importante porque Navier–Stokes es uno de los modelos fundamentales con los que describimos fluidos reales. Si el modelo puede llegar a una situación donde deja de producir un comportamiento suave y bien definido, necesitamos entender cuándo ocurre y qué significa. Esto afecta nuestra confianza en las predicciones que hacemos con él y también puede señalar que en ciertas condiciones, la descripción continua del fluido ya no es suficiente. Una singularidad matemática no significa necesariamente que aparezca un infinito físico real en el agua o en el aire, pero sí puede indicar un límite importante de nuestra forma de describirlos, y eso es un problema serio.</p>
+<p data-original="25">En dos dimensiones este problema no aparece. Podemos demostrar que el movimiento del fluido permanece suave y bien definido. Pero los fluidos reales se mueven en tres dimensiones, no dos, y ahí las cosas cambian. Los remolinos pueden estirarse, doblarse y reorganizarse de maneras que no son posibles en dos dimensiones. Esa tercera dimensión introduce comportamientos adicionales y hace mucho más difícil demostrar que el movimiento permanecerá siempre bien definido. Por eso el caso verdaderamente importante es justamente el de tres dimensiones, porque es el que corresponde al mundo físico en el que vivimos, y ahí aparece exactamente el problema de Navier–Stokes, sabemos usar las ecuaciones, porque las usamos todos los días para estudiar y simular fluidos, pero en tres dimensiones, no sabemos si esas ecuaciones garantizan siempre un movimiento suave y bien definido, o si existe alguna situación en la que el comportamiento del fluido se vuelva tan extremo que aparezca una singularidad. Resolver el problema significa demostrar una de esas dos posibilidades.</p>
+<aside class="demo-note"><strong>Alcance de los juegos.</strong> Estas exploraciones permanecen en dos dimensiones. Una simulación sobre una malla finita permite observar el modelo durante un intervalo, pero no demuestra regularidad para todo tiempo ni reproduce el estiramiento tridimensional de remolinos.</aside>
+<p data-original="26">Este problema permaneció abierto durante alrededor de 90 años. Aunque las ecuaciones se conocen desde el siglo XIX y se han usado durante décadas para estudiar fluidos, nadie había logrado demostrar qué ocurre en todos los casos posibles en tres dimensiones. Ah, pero en septiembre de 2026, OpenAI presentó una solución generada con un sistema de inteligencia artificial. Ellos indican que la estrategia fue buscar un caso concreto donde el comportamiento suave del fluido se rompiera, y bueno, usando fuerza bruta (irónicamente sistemas de IA), el sistema encontró una configuración en la que un remolino se concentra, se estira y gira cada vez más rápido hasta producir una singularidad en un tiempo finito, manteniendo al mismo tiempo una energía total finita. La demostración fue además formalizada en Lean, un sistema que permite verificar paso a paso la validez lógica de una prueba matemática.</p>
+<p data-original="27">La implicación del resultado es importante porque cambia una pregunta abierta por una propiedad concreta de las ecuaciones, es decir, Navier–Stokes puede producir, al menos matemáticamente, una singularidad en tres dimensiones. Esto no significa que nuestras simulaciones de agua, aire o clima dejen de servir, ni que los fluidos reales produzcan infinitos observables. Significa que ahora sabemos que la descripción matemática tiene situaciones extremas en las que deja de mantenerse suave. También nos permite entender mejor hasta dónde podemos confiar en el modelo, qué condiciones producen esos comportamientos y dónde podría ser necesario incorporar más física o nuevas formas de cálculo. Resolver el problema no cierra el estudio de los fluidos, más bien nos da una respuesta precisa sobre uno de los límites fundamentales de la teoría.</p>
+<p class="demo-note">Lectura complementaria sobre el resultado mencionado en el artículo: <a href="https://openai.com/index/navier-stokes-solution/">anuncio de OpenAI del 8 de septiembre de 2026</a>. El anuncio describe el caso con una fuerza externa suave y energía finita, y enlaza el artículo y la formalización en Lean.</p>
+<footer class="author">
+<p data-original="29">Tomás de Camino Beck, Ph.D.</p>
+<p data-original="30">Director Escuela de Sistemas Inteligentes</p>
+<p data-original="31">Universidad CENFOTEC</p>
+</footer>
+<details class="code-details"><summary>Explorar el código completo de los seis juegos</summary><pre><code>/* Modelos didácticos bidimensionales. Unidades normalizadas y tiempo fijo.
+   Las etapas 1–5 aíslan mecanismos; la etapa 6 combina un campo de velocidad
+   con advección semilagrangiana, difusión y proyección de presión. */
+&#x27;use strict&#x27;;
+const W=720,H=400,DT=1/60;
+const clamp=(x,a,b)=&gt;Math.max(a,Math.min(b,x));
+function arrow(c,x,y,u,v,color=&#x27;#245f8f&#x27;){
+ const d=Math.hypot(u,v); if(d&lt;.4)return;
+ c.strokeStyle=color;c.lineWidth=1.5;c.beginPath();c.moveTo(x,y);c.lineTo(x+u,y+v);c.stroke();
+ const a=Math.atan2(v,u);c.beginPath();c.moveTo(x+u-5*Math.cos(a-.5),y+v-5*Math.sin(a-.5));c.lineTo(x+u,y+v);c.lineTo(x+u-5*Math.cos(a+.5),y+v-5*Math.sin(a+.5));c.stroke();
+}
+function disk(c,x,y,r,color){c.fillStyle=color;c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill();}
+function target(c,x,y,r){c.strokeStyle=&#x27;#39766d&#x27;;c.lineWidth=2;c.setLineDash([5,4]);c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.stroke();c.setLineDash([]);}
+function label(c,s,x,y){c.fillStyle=&#x27;#475566&#x27;;c.font=&#x27;14px Arial&#x27;;c.fillText(s,x,y);}
+class Fluid{
+ constructor(){this.nx=48;this.ny=28;this.n=this.nx*this.ny;this.u=new Float64Array(this.n);this.v=new Float64Array(this.n);}
+ ix(x,y){return x+this.nx*y;}
+ sample(a,x,y){x=clamp(x,0,this.nx-1.001);y=clamp(y,0,this.ny-1.001);const i=Math.floor(x),j=Math.floor(y),s=x-i,t=y-j;return (1-s)*((1-t)*a[this.ix(i,j)]+t*a[this.ix(i,j+1)])+s*((1-t)*a[this.ix(i+1,j)]+t*a[this.ix(i+1,j+1)]);}
+ wall(){for(let y=0;y&lt;this.ny;y++)for(let x=0;x&lt;this.nx;x++)if(x===0||y===0||x===this.nx-1||y===this.ny-1){const i=this.ix(x,y);this.u[i]=0;this.v[i]=0;}}
+ impulse(px,py,dx,dy){for(let y=1;y&lt;this.ny-1;y++)for(let x=1;x&lt;this.nx-1;x++){const q=Math.exp(-((x-px)**2+(y-py)**2)/7),i=this.ix(x,y);this.u[i]+=dx*q;this.v[i]+=dy*q;}this.wall();}
+ diffuse(amount){for(const a of [this.u,this.v]){const b=a.slice();for(let y=1;y&lt;this.ny-1;y++)for(let x=1;x&lt;this.nx-1;x++){const i=this.ix(x,y);a[i]=b[i]+amount*(b[i-1]+b[i+1]+b[i-this.nx]+b[i+this.nx]-4*b[i]);}}this.wall();}
+ project(){const p=new Float64Array(this.n),d=new Float64Array(this.n);for(let y=1;y&lt;this.ny-1;y++)for(let x=1;x&lt;this.nx-1;x++){const i=this.ix(x,y);d[i]=-.5*(this.u[i+1]-this.u[i-1]+this.v[i+this.nx]-this.v[i-this.nx]);}
+ for(let k=0;k&lt;55;k++){for(let y=1;y&lt;this.ny-1;y++)for(let x=1;x&lt;this.nx-1;x++){const i=this.ix(x,y);p[i]=(d[i]+p[i-1]+p[i+1]+p[i-this.nx]+p[i+this.nx])/4;}
+ for(let x=1;x&lt;this.nx-1;x++){p[this.ix(x,0)]=p[this.ix(x,1)];p[this.ix(x,this.ny-1)]=p[this.ix(x,this.ny-2)];}for(let y=0;y&lt;this.ny;y++){p[this.ix(0,y)]=p[this.ix(1,y)];p[this.ix(this.nx-1,y)]=p[this.ix(this.nx-2,y)];}}
+ for(let y=1;y&lt;this.ny-1;y++)for(let x=1;x&lt;this.nx-1;x++){const i=this.ix(x,y);this.u[i]-=.5*(p[i+1]-p[i-1]);this.v[i]-=.5*(p[i+this.nx]-p[i-this.nx]);}this.wall();}
+ step(nu){this.diffuse(nu);this.project();const a=this.u.slice(),b=this.v.slice();for(let y=1;y&lt;this.ny-1;y++)for(let x=1;x&lt;this.nx-1;x++){const i=this.ix(x,y),px=x-DT*a[i],py=y-DT*b[i];this.u[i]=this.sample(a,px,py);this.v[i]=this.sample(b,px,py);}this.wall();this.project();}
+}
+class Game{
+ constructor(el){this.el=el;this.id=+el.dataset.game;this.c=el.querySelector(&#x27;canvas&#x27;);this.ctx=this.c.getContext(&#x27;2d&#x27;);this.status=el.querySelector(&#x27;.status&#x27;);this.metric=el.querySelector(&#x27;.metric&#x27;);this.play=el.querySelector(&#x27;[data-action=&quot;play&quot;]&#x27;);this.running=false;this.visible=false;this.keys=new Set();this.reset();
+ this.play.addEventListener(&#x27;click&#x27;,()=&gt;{this.running=!this.running;this.play.textContent=this.running?&#x27;Pausar&#x27;:&#x27;Continuar&#x27;;if(this.running)wake();});
+ el.querySelector(&#x27;[data-action=&quot;reset&quot;]&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;this.reset());
+ el.querySelectorAll(&#x27;input&#x27;).forEach(a=&gt;a.addEventListener(&#x27;input&#x27;,()=&gt;{el.querySelector(&#x27;#&#x27;+a.id+&#x27;-value&#x27;).textContent=a.value;this.draw();}));
+ el.querySelectorAll(&#x27;[data-push]&#x27;).forEach(b=&gt;b.addEventListener(&#x27;click&#x27;,()=&gt;this.push(b.dataset.push)));
+ this.c.addEventListener(&#x27;keydown&#x27;,e=&gt;{if([&#x27;ArrowUp&#x27;,&#x27;ArrowDown&#x27;,&#x27;ArrowLeft&#x27;,&#x27;ArrowRight&#x27;,&#x27; &#x27;].includes(e.key)){e.preventDefault();if(e.key===&#x27; &#x27;){this.play.click();return;}this.push(e.key.replace(&#x27;Arrow&#x27;,&#x27;&#x27;).toLowerCase());}});
+ let last=null;
+ this.c.addEventListener(&#x27;pointerdown&#x27;,e=&gt;{const p=this.point(e);last=p;this.c.setPointerCapture(e.pointerId);if(this.id===1)this.push(&#x27;right&#x27;);if(this.id===6){this.fluid.impulse(p.x/W*47,p.y/H*27,4,0);this.start();}});
+ this.c.addEventListener(&#x27;pointermove&#x27;,e=&gt;{if(!last||this.id!==6)return;const p=this.point(e);this.fluid.impulse(p.x/W*47,p.y/H*27,clamp((p.x-last.x)*.6,-15,15),clamp((p.y-last.y)*.6,-15,15));last=p;});
+ for(const name of [&#x27;pointerup&#x27;,&#x27;pointercancel&#x27;,&#x27;lostpointercapture&#x27;])this.c.addEventListener(name,()=&gt;last=null);
+ }
+ point(e){const r=this.c.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height};}
+ val(name,fallback=0){const i=this.el.querySelector(&#x27;[data-param=&quot;&#x27;+name+&#x27;&quot;]&#x27;);return i?+i.value:fallback;}
+ start(){this.running=true;this.play.textContent=&#x27;Pausar&#x27;;wake();}
+ reset(){this.el.classList.remove(&#x27;complete&#x27;);document.querySelector(&#x27;#progress&#x27;).textContent=document.querySelectorAll(&#x27;.complete&#x27;).length+&#x27; de 6 retos logrados&#x27;;this.running=false;this.won=false;this.time=0;this.hits=0;this.p={x:100,y:200,u:0,v:0};this.trail=[];this.energy0=1;this.fluid=new Fluid();this.local=new Float64Array(180);this.maxLocal=0;this.visc=Float64Array.from({length:40},(_,i)=&gt;Math.sin(Math.PI*i/39)*Math.sin(2*Math.PI*i/39));this.initialVariance=this.visc.reduce((s,x)=&gt;s+x*x,0);this.particles=Array.from({length:160},(_,i)=&gt;({x:7+2*Math.cos(i*2.399)*Math.sqrt(i/160),y:14+2*Math.sin(i*2.399)*Math.sqrt(i/160),hit:false}));this.el.querySelectorAll(&#x27;input&#x27;).forEach(i=&gt;{i.value=i.defaultValue;this.el.querySelector(&#x27;#&#x27;+i.id+&#x27;-value&#x27;).textContent=i.value;});this.play.textContent=&#x27;Iniciar&#x27;;this.status.textContent=this.el.dataset.initial;this.metric.textContent=&#x27;Listo para explorar&#x27;;this.draw();}
+ win(text){if(this.won)return;this.won=true;this.status.textContent=&#x27;Reto logrado. &#x27;+text;this.el.classList.add(&#x27;complete&#x27;);document.querySelector(&#x27;#progress&#x27;).textContent=document.querySelectorAll(&#x27;.complete&#x27;).length+&#x27; de 6 retos logrados&#x27;;}
+ push(dir){const d={right:[1,0],left:[-1,0],up:[0,-1],down:[0,1]}[dir]||[1,0];
+ if(this.id===1){for(let y=3;y&lt;7;y++)this.local[2+y*18]+=1;this.maxLocal=Math.max(this.maxLocal,...this.local);}
+ if(this.id===5){this.p.u+=d[0]*50;this.p.v+=d[1]*50;}
+ if(this.id===6){this.fluid.impulse(this.particles.filter(p=&gt;!p.hit).reduce((s,p)=&gt;s+p.x,0)/Math.max(1,160-this.hits),this.particles.filter(p=&gt;!p.hit).reduce((s,p)=&gt;s+p.y,0)/Math.max(1,160-this.hits),d[0]*14,d[1]*14);}
+ this.start();}
+ update(){this.time+=DT;const id=this.id;
+ if(id===1){const a=this.local,b=a.slice();for(let y=0;y&lt;10;y++)for(let x=0;x&lt;18;x++){const i=x+y*18;let v=0;for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const xx=x+dx,yy=y+dy;if(xx&gt;=0&amp;&amp;xx&lt;18&amp;&amp;yy&gt;=0&amp;&amp;yy&lt;10)v+=b[xx+18*yy]-b[i];}a[i]+=this.val(&#x27;spread&#x27;)*.018*v;}let far=0;for(let y=0;y&lt;10;y++)far=Math.max(far,a[11+y*18]);this.metric.textContent=&#x27;Movimiento en la zona lejana · &#x27;+(far*100).toFixed(1)+&#x27; %&#x27;;if(far&gt;.018)this.win(&#x27;El impulso llegó mediante intercambios entre vecinos.&#x27;);}
+ if(id===2){const speed=this.val(&#x27;speed&#x27;);this.p.x+=speed*DT;this.p.y=200+65*Math.sin((this.p.x-100)/110);if(this.p.x&gt;650)this.p.x=100;if(Math.hypot(this.p.x-565,this.p.y-(200+65*Math.sin(465/110)))&lt;22)this.win(&#x27;El trazador fue transportado por el campo de velocidad.&#x27;);this.metric.textContent=&#x27;Rapidez horizontal · &#x27;+speed+&#x27; unidades/s&#x27;;}
+ if(id===3){const a=this.val(&#x27;pressure&#x27;)*1.8;this.p.u+=a*DT;this.p.x+=this.p.u*DT;if(this.p.x&lt;30||this.p.x&gt;690){this.p.x=clamp(this.p.x,30,690);this.p.u=0;}if(Math.abs(this.p.x-550)&lt;32&amp;&amp;Math.abs(this.p.u)&lt;18)this.win(&#x27;La diferencia de presión aceleró y luego frenó la región.&#x27;);this.metric.textContent=&#x27;Velocidad · &#x27;+this.p.u.toFixed(1)+&#x27; unidades/s&#x27;;}
+ if(id===4){const old=this.visc.slice(),a=this.val(&#x27;nu&#x27;)*.0024;for(let i=1;i&lt;39;i++)this.visc[i]+=a*(old[i-1]+old[i+1]-2*old[i]);const remaining=this.visc.reduce((s,x)=&gt;s+x*x,0)/this.initialVariance;this.metric.textContent=&#x27;Movimiento restante · &#x27;+(100*remaining).toFixed(1)+&#x27; %&#x27;;if(remaining&lt;.2)this.win(&#x27;La viscosidad suavizó las diferencias y las paredes disiparon el movimiento.&#x27;);}
+ if(id===5){this.p.x+=this.p.u*DT;this.p.y+=this.p.v*DT;for(const k of [&#x27;x&#x27;,&#x27;y&#x27;]){const max=k===&#x27;x&#x27;?690:370,v=k===&#x27;x&#x27;?&#x27;u&#x27;:&#x27;v&#x27;;if(this.p[k]&lt;30||this.p[k]&gt;max){this.p[k]=clamp(this.p[k],30,max);this.p[v]*=-.6;}}if(Math.hypot(this.p.x-560,this.p.y-100)&lt;36&amp;&amp;Math.hypot(this.p.u,this.p.v)&lt;25)this.win(&#x27;Usaste impulsos opuestos para cambiar y detener el movimiento.&#x27;);this.metric.textContent=&#x27;Rapidez · &#x27;+Math.hypot(this.p.u,this.p.v).toFixed(1)+&#x27; unidades/s&#x27;;}
+ if(id===6){this.fluid.step(this.val(&#x27;nu&#x27;)*.0015);for(const p of this.particles){if(p.hit)continue;const u=this.fluid.sample(this.fluid.u,p.x,p.y),v=this.fluid.sample(this.fluid.v,p.x,p.y);p.x=clamp(p.x+u*DT,1,46);p.y=clamp(p.y+v*DT,1,26);if(Math.hypot(p.x-37,p.y-14)&lt;4){p.hit=true;this.hits++;}}this.metric.textContent=&#x27;Trazadores que llegaron · &#x27;+this.hits+&#x27; / 160&#x27;;if(this.hits&gt;=64)this.win(&#x27;Combinaste transporte, viscosidad, presión y fuerzas locales.&#x27;);}
+ if([2,3,5].includes(id)){this.trail.push({x:this.p.x,y:this.p.y});if(this.trail.length&gt;150)this.trail.shift();}
+ this.draw();}
+ draw(){const c=this.ctx;c.clearRect(0,0,W,H);c.fillStyle=&#x27;#f5f8fb&#x27;;c.fillRect(0,0,W,H);c.strokeStyle=&#x27;#e1e7ed&#x27;;c.lineWidth=1;for(let x=20;x&lt;W;x+=40){c.beginPath();c.moveTo(x,0);c.lineTo(x,H);c.stroke();}for(let y=0;y&lt;H;y+=40){c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke();}
+ const id=this.id;
+ if(id===1){c.fillStyle=&#x27;#e0ebe8&#x27;;c.fillRect(450,50,42,300);for(let y=0;y&lt;10;y++)for(let x=0;x&lt;18;x++){const v=this.local[x+18*y],px=30+x*38,py=55+y*32;disk(c,px,py,4+Math.min(6,v*4),&#x27;#7c9db7&#x27;);arrow(c,px,py,Math.min(30,v*50),0);}label(c,&#x27;Impulso local&#x27;,35,28);label(c,&#x27;Zona lejana&#x27;,440,28);}
+ if(id===2){for(let x=40;x&lt;690;x+=42)for(let y=60;y&lt;370;y+=48){const s=this.val(&#x27;speed&#x27;)*.15;arrow(c,x,y,s,s*65/110*Math.cos((x-100)/110));}target(c,565,200+65*Math.sin(465/110),26);label(c,&#x27;Lleva el trazador al círculo&#x27;,24,28);}
+ if(id===3){const q=this.val(&#x27;pressure&#x27;);c.fillStyle=q&gt;=0?&#x27;#bdd5e6&#x27;:&#x27;#e6ecf0&#x27;;c.fillRect(0,45,65,310);c.fillStyle=q&lt;=0?&#x27;#bdd5e6&#x27;:&#x27;#e6ecf0&#x27;;c.fillRect(655,45,65,310);for(let x=100;x&lt;650;x+=80)arrow(c,x,300,q*.4,0);target(c,550,200,32);label(c,&#x27;Izquierda&#x27;,12,28);label(c,&#x27;Derecha&#x27;,640,28);label(c,&#x27;Diferencia de presión → aceleración&#x27;,200,375);}
+ if(id===4){for(let i=0;i&lt;40;i++){const y=45+i*8;arrow(c,350,y,this.visc[i]*230,0);disk(c,350+this.visc[i]*230,y,3,&#x27;#245f8f&#x27;);}label(c,&#x27;Velocidades de capas vecinas&#x27;,22,25);label(c,&#x27;Paredes en reposo&#x27;,22,380);}
+ if(id===5){target(c,560,100,36);arrow(c,this.p.x,this.p.y,this.p.u*.35,this.p.v*.35);label(c,&#x27;Llega y frena dentro del círculo&#x27;,22,28);}
+ if([2,3,5].includes(id)){c.strokeStyle=&#x27;#87aac4&#x27;;c.lineWidth=2;c.beginPath();this.trail.forEach((p,i)=&gt;i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.stroke();disk(c,this.p.x,this.p.y,10,&#x27;#245f8f&#x27;);}
+ if(id===6){const f=this.fluid;for(let y=2;y&lt;27;y+=3)for(let x=2;x&lt;47;x+=3){const i=f.ix(x,y);arrow(c,x/47*W,y/27*H,clamp(f.u[i]*2,-26,26),clamp(f.v[i]*2,-26,26),&#x27;#94a8b8&#x27;);}target(c,37/47*W,14/27*H,4/47*W);for(const p of this.particles)disk(c,p.x/47*W,p.y/27*H,2.8,p.hit?&#x27;#39766d&#x27;:&#x27;#245f8f&#x27;);label(c,&#x27;Arrastra para agitar el fluido&#x27;,22,25);}
+ }
+}
+const games=Array.from(document.querySelectorAll(&#x27;[data-game]&#x27;),el=&gt;new Game(el));
+let raf=0,lastTime=0,accumulator=0;
+function wake(){if(!raf&amp;&amp;!document.hidden){lastTime=0;raf=requestAnimationFrame(frame);}}
+function frame(t){raf=0;if(document.hidden)return;if(!lastTime)lastTime=t;accumulator+=Math.min(.05,(t-lastTime)/1000);lastTime=t;while(accumulator&gt;=DT){games.forEach(g=&gt;{if(g.running&amp;&amp;g.visible)g.update();});accumulator-=DT;}if(games.some(g=&gt;g.running&amp;&amp;g.visible))raf=requestAnimationFrame(frame);else{lastTime=0;accumulator=0;}}
+const observer=new IntersectionObserver(entries=&gt;{entries.forEach(e=&gt;{const g=games.find(g=&gt;g.el===e.target);g.visible=e.isIntersecting;});if(games.some(g=&gt;g.visible&amp;&amp;g.running))wake();},{threshold:.05});games.forEach(g=&gt;observer.observe(g.el));
+document.addEventListener(&#x27;visibilitychange&#x27;,()=&gt;{if(document.hidden){cancelAnimationFrame(raf);raf=0;lastTime=0;accumulator=0;}else wake();});
+</code></pre></details>
+<nav class="book-nav" aria-label="Navegación final"><a href="index.html">← Volver al índice</a> · <a href="#inicio">Volver al inicio ↑</a></nav>
+<noscript><p>El artículo se puede leer completo. Activa JavaScript para utilizar los juegos.</p></noscript>
+<script>/* Modelos didácticos bidimensionales. Unidades normalizadas y tiempo fijo.
+   Las etapas 1–5 aíslan mecanismos; la etapa 6 combina un campo de velocidad
+   con advección semilagrangiana, difusión y proyección de presión. */
+'use strict';
+const W=720,H=400,DT=1/60;
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+function arrow(c,x,y,u,v,color='#245f8f'){
+ const d=Math.hypot(u,v); if(d<.4)return;
+ c.strokeStyle=color;c.lineWidth=1.5;c.beginPath();c.moveTo(x,y);c.lineTo(x+u,y+v);c.stroke();
+ const a=Math.atan2(v,u);c.beginPath();c.moveTo(x+u-5*Math.cos(a-.5),y+v-5*Math.sin(a-.5));c.lineTo(x+u,y+v);c.lineTo(x+u-5*Math.cos(a+.5),y+v-5*Math.sin(a+.5));c.stroke();
+}
+function disk(c,x,y,r,color){c.fillStyle=color;c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill();}
+function target(c,x,y,r){c.strokeStyle='#39766d';c.lineWidth=2;c.setLineDash([5,4]);c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.stroke();c.setLineDash([]);}
+function label(c,s,x,y){c.fillStyle='#475566';c.font='14px Arial';c.fillText(s,x,y);}
+class Fluid{
+ constructor(){this.nx=48;this.ny=28;this.n=this.nx*this.ny;this.u=new Float64Array(this.n);this.v=new Float64Array(this.n);}
+ ix(x,y){return x+this.nx*y;}
+ sample(a,x,y){x=clamp(x,0,this.nx-1.001);y=clamp(y,0,this.ny-1.001);const i=Math.floor(x),j=Math.floor(y),s=x-i,t=y-j;return (1-s)*((1-t)*a[this.ix(i,j)]+t*a[this.ix(i,j+1)])+s*((1-t)*a[this.ix(i+1,j)]+t*a[this.ix(i+1,j+1)]);}
+ wall(){for(let y=0;y<this.ny;y++)for(let x=0;x<this.nx;x++)if(x===0||y===0||x===this.nx-1||y===this.ny-1){const i=this.ix(x,y);this.u[i]=0;this.v[i]=0;}}
+ impulse(px,py,dx,dy){for(let y=1;y<this.ny-1;y++)for(let x=1;x<this.nx-1;x++){const q=Math.exp(-((x-px)**2+(y-py)**2)/7),i=this.ix(x,y);this.u[i]+=dx*q;this.v[i]+=dy*q;}this.wall();}
+ diffuse(amount){for(const a of [this.u,this.v]){const b=a.slice();for(let y=1;y<this.ny-1;y++)for(let x=1;x<this.nx-1;x++){const i=this.ix(x,y);a[i]=b[i]+amount*(b[i-1]+b[i+1]+b[i-this.nx]+b[i+this.nx]-4*b[i]);}}this.wall();}
+ project(){const p=new Float64Array(this.n),d=new Float64Array(this.n);for(let y=1;y<this.ny-1;y++)for(let x=1;x<this.nx-1;x++){const i=this.ix(x,y);d[i]=-.5*(this.u[i+1]-this.u[i-1]+this.v[i+this.nx]-this.v[i-this.nx]);}
+ for(let k=0;k<55;k++){for(let y=1;y<this.ny-1;y++)for(let x=1;x<this.nx-1;x++){const i=this.ix(x,y);p[i]=(d[i]+p[i-1]+p[i+1]+p[i-this.nx]+p[i+this.nx])/4;}
+ for(let x=1;x<this.nx-1;x++){p[this.ix(x,0)]=p[this.ix(x,1)];p[this.ix(x,this.ny-1)]=p[this.ix(x,this.ny-2)];}for(let y=0;y<this.ny;y++){p[this.ix(0,y)]=p[this.ix(1,y)];p[this.ix(this.nx-1,y)]=p[this.ix(this.nx-2,y)];}}
+ for(let y=1;y<this.ny-1;y++)for(let x=1;x<this.nx-1;x++){const i=this.ix(x,y);this.u[i]-=.5*(p[i+1]-p[i-1]);this.v[i]-=.5*(p[i+this.nx]-p[i-this.nx]);}this.wall();}
+ step(nu){this.diffuse(nu);this.project();const a=this.u.slice(),b=this.v.slice();for(let y=1;y<this.ny-1;y++)for(let x=1;x<this.nx-1;x++){const i=this.ix(x,y),px=x-DT*a[i],py=y-DT*b[i];this.u[i]=this.sample(a,px,py);this.v[i]=this.sample(b,px,py);}this.wall();this.project();}
+}
+class Game{
+ constructor(el){this.el=el;this.id=+el.dataset.game;this.c=el.querySelector('canvas');this.ctx=this.c.getContext('2d');this.status=el.querySelector('.status');this.metric=el.querySelector('.metric');this.play=el.querySelector('[data-action="play"]');this.running=false;this.visible=false;this.keys=new Set();this.reset();
+ this.play.addEventListener('click',()=>{this.running=!this.running;this.play.textContent=this.running?'Pausar':'Continuar';if(this.running)wake();});
+ el.querySelector('[data-action="reset"]').addEventListener('click',()=>this.reset());
+ el.querySelectorAll('input').forEach(a=>a.addEventListener('input',()=>{el.querySelector('#'+a.id+'-value').textContent=a.value;this.draw();}));
+ el.querySelectorAll('[data-push]').forEach(b=>b.addEventListener('click',()=>this.push(b.dataset.push)));
+ this.c.addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key)){e.preventDefault();if(e.key===' '){this.play.click();return;}this.push(e.key.replace('Arrow','').toLowerCase());}});
+ let last=null;
+ this.c.addEventListener('pointerdown',e=>{const p=this.point(e);last=p;this.c.setPointerCapture(e.pointerId);if(this.id===1)this.push('right');if(this.id===6){this.fluid.impulse(p.x/W*47,p.y/H*27,4,0);this.start();}});
+ this.c.addEventListener('pointermove',e=>{if(!last||this.id!==6)return;const p=this.point(e);this.fluid.impulse(p.x/W*47,p.y/H*27,clamp((p.x-last.x)*.6,-15,15),clamp((p.y-last.y)*.6,-15,15));last=p;});
+ for(const name of ['pointerup','pointercancel','lostpointercapture'])this.c.addEventListener(name,()=>last=null);
+ }
+ point(e){const r=this.c.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height};}
+ val(name,fallback=0){const i=this.el.querySelector('[data-param="'+name+'"]');return i?+i.value:fallback;}
+ start(){this.running=true;this.play.textContent='Pausar';wake();}
+ reset(){this.el.classList.remove('complete');document.querySelector('#progress').textContent=document.querySelectorAll('.complete').length+' de 6 retos logrados';this.running=false;this.won=false;this.time=0;this.hits=0;this.p={x:100,y:200,u:0,v:0};this.trail=[];this.energy0=1;this.fluid=new Fluid();this.local=new Float64Array(180);this.maxLocal=0;this.visc=Float64Array.from({length:40},(_,i)=>Math.sin(Math.PI*i/39)*Math.sin(2*Math.PI*i/39));this.initialVariance=this.visc.reduce((s,x)=>s+x*x,0);this.particles=Array.from({length:160},(_,i)=>({x:7+2*Math.cos(i*2.399)*Math.sqrt(i/160),y:14+2*Math.sin(i*2.399)*Math.sqrt(i/160),hit:false}));this.el.querySelectorAll('input').forEach(i=>{i.value=i.defaultValue;this.el.querySelector('#'+i.id+'-value').textContent=i.value;});this.play.textContent='Iniciar';this.status.textContent=this.el.dataset.initial;this.metric.textContent='Listo para explorar';this.draw();}
+ win(text){if(this.won)return;this.won=true;this.status.textContent='Reto logrado. '+text;this.el.classList.add('complete');document.querySelector('#progress').textContent=document.querySelectorAll('.complete').length+' de 6 retos logrados';}
+ push(dir){const d={right:[1,0],left:[-1,0],up:[0,-1],down:[0,1]}[dir]||[1,0];
+ if(this.id===1){for(let y=3;y<7;y++)this.local[2+y*18]+=1;this.maxLocal=Math.max(this.maxLocal,...this.local);}
+ if(this.id===5){this.p.u+=d[0]*50;this.p.v+=d[1]*50;}
+ if(this.id===6){this.fluid.impulse(this.particles.filter(p=>!p.hit).reduce((s,p)=>s+p.x,0)/Math.max(1,160-this.hits),this.particles.filter(p=>!p.hit).reduce((s,p)=>s+p.y,0)/Math.max(1,160-this.hits),d[0]*14,d[1]*14);}
+ this.start();}
+ update(){this.time+=DT;const id=this.id;
+ if(id===1){const a=this.local,b=a.slice();for(let y=0;y<10;y++)for(let x=0;x<18;x++){const i=x+y*18;let v=0;for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const xx=x+dx,yy=y+dy;if(xx>=0&&xx<18&&yy>=0&&yy<10)v+=b[xx+18*yy]-b[i];}a[i]+=this.val('spread')*.018*v;}let far=0;for(let y=0;y<10;y++)far=Math.max(far,a[11+y*18]);this.metric.textContent='Movimiento en la zona lejana · '+(far*100).toFixed(1)+' %';if(far>.018)this.win('El impulso llegó mediante intercambios entre vecinos.');}
+ if(id===2){const speed=this.val('speed');this.p.x+=speed*DT;this.p.y=200+65*Math.sin((this.p.x-100)/110);if(this.p.x>650)this.p.x=100;if(Math.hypot(this.p.x-565,this.p.y-(200+65*Math.sin(465/110)))<22)this.win('El trazador fue transportado por el campo de velocidad.');this.metric.textContent='Rapidez horizontal · '+speed+' unidades/s';}
+ if(id===3){const a=this.val('pressure')*1.8;this.p.u+=a*DT;this.p.x+=this.p.u*DT;if(this.p.x<30||this.p.x>690){this.p.x=clamp(this.p.x,30,690);this.p.u=0;}if(Math.abs(this.p.x-550)<32&&Math.abs(this.p.u)<18)this.win('La diferencia de presión aceleró y luego frenó la región.');this.metric.textContent='Velocidad · '+this.p.u.toFixed(1)+' unidades/s';}
+ if(id===4){const old=this.visc.slice(),a=this.val('nu')*.0024;for(let i=1;i<39;i++)this.visc[i]+=a*(old[i-1]+old[i+1]-2*old[i]);const remaining=this.visc.reduce((s,x)=>s+x*x,0)/this.initialVariance;this.metric.textContent='Movimiento restante · '+(100*remaining).toFixed(1)+' %';if(remaining<.2)this.win('La viscosidad suavizó las diferencias y las paredes disiparon el movimiento.');}
+ if(id===5){this.p.x+=this.p.u*DT;this.p.y+=this.p.v*DT;for(const k of ['x','y']){const max=k==='x'?690:370,v=k==='x'?'u':'v';if(this.p[k]<30||this.p[k]>max){this.p[k]=clamp(this.p[k],30,max);this.p[v]*=-.6;}}if(Math.hypot(this.p.x-560,this.p.y-100)<36&&Math.hypot(this.p.u,this.p.v)<25)this.win('Usaste impulsos opuestos para cambiar y detener el movimiento.');this.metric.textContent='Rapidez · '+Math.hypot(this.p.u,this.p.v).toFixed(1)+' unidades/s';}
+ if(id===6){this.fluid.step(this.val('nu')*.0015);for(const p of this.particles){if(p.hit)continue;const u=this.fluid.sample(this.fluid.u,p.x,p.y),v=this.fluid.sample(this.fluid.v,p.x,p.y);p.x=clamp(p.x+u*DT,1,46);p.y=clamp(p.y+v*DT,1,26);if(Math.hypot(p.x-37,p.y-14)<4){p.hit=true;this.hits++;}}this.metric.textContent='Trazadores que llegaron · '+this.hits+' / 160';if(this.hits>=64)this.win('Combinaste transporte, viscosidad, presión y fuerzas locales.');}
+ if([2,3,5].includes(id)){this.trail.push({x:this.p.x,y:this.p.y});if(this.trail.length>150)this.trail.shift();}
+ this.draw();}
+ draw(){const c=this.ctx;c.clearRect(0,0,W,H);c.fillStyle='#f5f8fb';c.fillRect(0,0,W,H);c.strokeStyle='#e1e7ed';c.lineWidth=1;for(let x=20;x<W;x+=40){c.beginPath();c.moveTo(x,0);c.lineTo(x,H);c.stroke();}for(let y=0;y<H;y+=40){c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke();}
+ const id=this.id;
+ if(id===1){c.fillStyle='#e0ebe8';c.fillRect(450,50,42,300);for(let y=0;y<10;y++)for(let x=0;x<18;x++){const v=this.local[x+18*y],px=30+x*38,py=55+y*32;disk(c,px,py,4+Math.min(6,v*4),'#7c9db7');arrow(c,px,py,Math.min(30,v*50),0);}label(c,'Impulso local',35,28);label(c,'Zona lejana',440,28);}
+ if(id===2){for(let x=40;x<690;x+=42)for(let y=60;y<370;y+=48){const s=this.val('speed')*.15;arrow(c,x,y,s,s*65/110*Math.cos((x-100)/110));}target(c,565,200+65*Math.sin(465/110),26);label(c,'Lleva el trazador al círculo',24,28);}
+ if(id===3){const q=this.val('pressure');c.fillStyle=q>=0?'#bdd5e6':'#e6ecf0';c.fillRect(0,45,65,310);c.fillStyle=q<=0?'#bdd5e6':'#e6ecf0';c.fillRect(655,45,65,310);for(let x=100;x<650;x+=80)arrow(c,x,300,q*.4,0);target(c,550,200,32);label(c,'Izquierda',12,28);label(c,'Derecha',640,28);label(c,'Diferencia de presión → aceleración',200,375);}
+ if(id===4){for(let i=0;i<40;i++){const y=45+i*8;arrow(c,350,y,this.visc[i]*230,0);disk(c,350+this.visc[i]*230,y,3,'#245f8f');}label(c,'Velocidades de capas vecinas',22,25);label(c,'Paredes en reposo',22,380);}
+ if(id===5){target(c,560,100,36);arrow(c,this.p.x,this.p.y,this.p.u*.35,this.p.v*.35);label(c,'Llega y frena dentro del círculo',22,28);}
+ if([2,3,5].includes(id)){c.strokeStyle='#87aac4';c.lineWidth=2;c.beginPath();this.trail.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.stroke();disk(c,this.p.x,this.p.y,10,'#245f8f');}
+ if(id===6){const f=this.fluid;for(let y=2;y<27;y+=3)for(let x=2;x<47;x+=3){const i=f.ix(x,y);arrow(c,x/47*W,y/27*H,clamp(f.u[i]*2,-26,26),clamp(f.v[i]*2,-26,26),'#94a8b8');}target(c,37/47*W,14/27*H,4/47*W);for(const p of this.particles)disk(c,p.x/47*W,p.y/27*H,2.8,p.hit?'#39766d':'#245f8f');label(c,'Arrastra para agitar el fluido',22,25);}
+ }
+}
+const games=Array.from(document.querySelectorAll('[data-game]'),el=>new Game(el));
+let raf=0,lastTime=0,accumulator=0;
+function wake(){if(!raf&&!document.hidden){lastTime=0;raf=requestAnimationFrame(frame);}}
+function frame(t){raf=0;if(document.hidden)return;if(!lastTime)lastTime=t;accumulator+=Math.min(.05,(t-lastTime)/1000);lastTime=t;while(accumulator>=DT){games.forEach(g=>{if(g.running&&g.visible)g.update();});accumulator-=DT;}if(games.some(g=>g.running&&g.visible))raf=requestAnimationFrame(frame);else{lastTime=0;accumulator=0;}}
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{const g=games.find(g=>g.el===e.target);g.visible=e.isIntersecting;});if(games.some(g=>g.visible&&g.running))wake();},{threshold:.05});games.forEach(g=>observer.observe(g.el));
+document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0;lastTime=0;accumulator=0;}else wake();});
+</script>
+</main></body></html>
