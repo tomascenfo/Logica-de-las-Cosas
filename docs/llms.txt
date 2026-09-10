@@ -158,6 +158,12 @@ Conceptos relacionados: zero-knowledge proofs, criptografía, privacidad, demost
 
 Conceptos relacionados: criptografía, privacidad, cifrado homomórfico, procesamiento de datos, computación segura y protección de información.
 
+### 21. Navier-Stokes
+
+- [Una explicación sencilla de Navier-Stokes](https://tomascenfo.github.io/Logica-de-las-Cosas/navier-stokes/): Explicación progresiva de las ecuaciones de Navier-Stokes mediante seis exploraciones interactivas en dos dimensiones que muestran el intercambio entre vecinos, el transporte del movimiento, la presión, la viscosidad, las fuerzas externas y el comportamiento integrado de un fluido.
+
+Conceptos relacionados: dinámica de fluidos, velocidad, presión, viscosidad, transporte, fuerzas externas, interacciones locales, ecuaciones diferenciales parciales, simulación y problema de regularidad de Navier-Stokes.
+
 ## Rutas conceptuales recomendadas
 
 ### Para aprender sobre computación
@@ -173,6 +179,7 @@ Conceptos relacionados: criptografía, privacidad, cifrado homomórfico, procesa
 3. [Percolación](https://tomascenfo.github.io/Logica-de-las-Cosas/percolacion/)
 4. [La belleza de los fractales](https://tomascenfo.github.io/Logica-de-las-Cosas/fractales/)
 5. [El Juego de la Vida](https://tomascenfo.github.io/Logica-de-las-Cosas/game-of-life/)
+6. [Una explicación sencilla de Navier-Stokes](https://tomascenfo.github.io/Logica-de-las-Cosas/navier-stokes/)
 
 ### Para aprender sobre probabilidad e información
 
