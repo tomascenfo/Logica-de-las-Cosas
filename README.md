@@ -18,6 +18,33 @@ Pueden ver los HTML en el repositorio, o ver el libro digital en el siguiente li
 
 https://tomascenfo.github.io/Logica-de-las-Cosas/
 
+
+## Capítulos
+
+1. [Introducción](docs/introduccion/index.html)
+2. [Notas y Números: La Conexión Pitagórica en la Música](docs/musica-mate/index.html)
+3. [Dinámica de congestiones de tráfico](docs/congestiones/index.html)
+4. [La matemática de las sorpresas (y algo de entropía)](docs/entropia/index.html)
+5. [Ley de Benford: ¿Cómo detectar datos poco confiables?](docs/ley-benford/index.html)
+6. [Heurísticas: Cuando el sentido común vale](docs/heuristicas/index.html)
+7. [Cuerpos que se atraen: El problema de atracción de tres planetas](docs/cuerpos/index.html)
+8. [El fenómeno de percolación](docs/percolacion/index.html)
+9. [Computar: La esencia de las computadoras](docs/computar/index.html)
+10. [La belleza de los fractales](docs/fractales/index.html)
+11. [Vida Artificial: la evolución como algoritmo](docs/geneticos/index.html)
+12. [El Juego de la Vida: Modelos de Autómata Celular](docs/game-of-life/index.html)
+13. [¿Qué es la encripción y cómo funciona?](docs/encriptacion/index.html)
+14. [Funcionamiento básico del GPS](docs/GPS/index.html)
+15. [Programación Genética: no no es manipulación de genes, es programar como los seres vivos](docs/programacion-genetica/index.html)
+16. [Cadenas de Markov: Ejemplo con un generador de texto básico](docs/markov/index.html)
+17. [2+2 no siempre es igual a 4 (y no es discurso motivacional)](docs/modulo/index.html)
+18. [Infinito y más allá: una breve explicación del infinito](docs/infinito/index.html)
+19. [Cómo Compartir Secretos Sin Revelarlos: Las Pruebas de Conocimiento Cero](docs/ZKP/index.html)
+20. [¿Cómo anonimizar datos? Encriptación homomórfica](docs/homomorfica/index.html)
+21. [Una explicación sencilla de Navier-Stokes](docs/navier-stokes/index.html)
+22. [Pitágoras mucho antes de Pitágoras: una mirada a Babilonia](docs/plimbton/index.html)
+
+
 **Tomás de Camino Beck**  
 Director Escuela de Sistemas Inteligentes  
 Universidad CENFOTEC
