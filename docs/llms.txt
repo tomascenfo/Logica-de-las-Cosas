@@ -164,6 +164,18 @@ Conceptos relacionados: criptografía, privacidad, cifrado homomórfico, procesa
 
 Conceptos relacionados: dinámica de fluidos, velocidad, presión, viscosidad, transporte, fuerzas externas, interacciones locales, ecuaciones diferenciales parciales, simulación y problema de regularidad de Navier-Stokes.
 
+### 22. Matemática babilónica
+
+- [Pitágoras mucho antes de Pitágoras: una mirada a Babilonia](https://tomascenfo.github.io/Logica-de-las-Cosas/plimbton/): Exploración de cómo la matemática babilónica conocía relaciones del triángulo rectángulo mucho antes de Pitágoras.
+
+Conceptos relacionados: historia de la matemática, Babilonia, triángulo rectángulo, ternas pitagóricas, sistema sexagesimal y geometría.
+
+### 23. Hipótesis de Riemann
+
+- [¿Qué es la Hipótesis de Riemann?](https://tomascenfo.github.io/Logica-de-las-Cosas/riemann/): Explicación de la función zeta de Riemann, su relación con los números primos, la continuación analítica, los ceros no triviales y la línea crítica, con experimentos interactivos que calculan sumas parciales, localizan ceros mediante la función Z de Hardy y el método de bisección, e ilustran la diferencia entre comprobar numéricamente y demostrar. Incluye una discusión de la propuesta de demostración anunciada por Levent Alpöge el 20 de noviembre de 2026.
+
+Conceptos relacionados: función zeta, números primos, producto de Euler, números complejos, continuación analítica, ceros no triviales, franja crítica, métodos numéricos, Euler–Maclaurin, bisección, demostración matemática y verificación formal con Lean.
+
 ## Rutas conceptuales recomendadas
 
 ### Para aprender sobre computación
