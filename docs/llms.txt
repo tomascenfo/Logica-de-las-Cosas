@@ -176,6 +176,12 @@ Conceptos relacionados: historia de la matemática, Babilonia, triángulo rectá
 
 Conceptos relacionados: función zeta, números primos, producto de Euler, números complejos, continuación analítica, ceros no triviales, franja crítica, métodos numéricos, Euler–Maclaurin, bisección, demostración matemática y verificación formal con Lean.
 
+### 24. Uno más uno igual a dos
+
+- [¿Cómo demuestra una computadora que 1 + 1 = 2?](https://tomascenfo.github.io/Logica-de-las-Cosas/uno-mas-uno/): Construcción de los números naturales a partir de cero y la operación sucesor, definición recursiva de la suma mediante dos reglas, demostración paso a paso de que uno más uno es dos y su formalización en Lean 4 con un tipo inductivo, una función recursiva y un teorema demostrado con rfl. Incluye paneles interactivos para construir números, aplicar las reglas de la suma y comparar construcciones, además del código completo de Lean para copiar o descargar.
+
+Conceptos relacionados: números naturales, axiomas de Peano, sucesor, recursión, definición frente a teorema, igualdad por definición, reducción de expresiones, tipos inductivos, Lean 4, asistentes de demostración y verificación formal.
+
 ## Rutas conceptuales recomendadas
 
 ### Para aprender sobre computación
@@ -183,6 +189,7 @@ Conceptos relacionados: función zeta, números primos, producto de Euler, núme
 1. [¿Qué significa computar?](https://tomascenfo.github.io/Logica-de-las-Cosas/computar/)
 2. [El Juego de la Vida](https://tomascenfo.github.io/Logica-de-las-Cosas/game-of-life/)
 3. [Infinito y más allá](https://tomascenfo.github.io/Logica-de-las-Cosas/infinito/)
+4. [¿Cómo demuestra una computadora que 1 + 1 = 2?](https://tomascenfo.github.io/Logica-de-las-Cosas/uno-mas-uno/)
 
 ### Para aprender sobre sistemas complejos
 
