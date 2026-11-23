@@ -44,6 +44,7 @@ https://tomascenfo.github.io/Logica-de-las-Cosas/
 21. [Una explicación sencilla de Navier-Stokes](https://tomascenfo.github.io/Logica-de-las-Cosas/navier-stokes/)
 22. [Pitágoras mucho antes de Pitágoras: una mirada a Babilonia](https://tomascenfo.github.io/Logica-de-las-Cosas/plimbton/)
 23. [¿Qué es la Hipótesis de Riemann?](https://tomascenfo.github.io/Logica-de-las-Cosas/riemann/)
+24. [¿Cómo demuestra una computadora que 1 + 1 = 2?](https://tomascenfo.github.io/Logica-de-las-Cosas/uno-mas-uno/)
 
 
 **Tomás de Camino Beck**  
